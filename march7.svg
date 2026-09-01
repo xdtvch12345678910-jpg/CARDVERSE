@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070b18"/><stop offset=".52" stop-color="#ffb7df" stop-opacity=".55"/><stop offset="1" stop-color="#070b18"/></linearGradient><radialGradient id="h"><stop stop-color="#ffb7df" stop-opacity=".75"/><stop offset="1" stop-color="#ffb7df" stop-opacity="0"/></radialGradient><filter id="b"><feGaussianBlur stdDeviation="22"/></filter></defs>
+<rect width="800" height="1000" fill="url(#g)"/><circle cx="400" cy="300" r="300" fill="url(#h)" filter="url(#b)"/>
+<circle cx="120" cy="150" r="5" fill="#fff" opacity=".7"/><circle cx="680" cy="210" r="4" fill="#fff" opacity=".6"/><circle cx="620" cy="80" r="3" fill="#fff" opacity=".8"/>
+<path d="M65 925 Q120 595 400 560 Q680 595 735 925Z" fill="#5b397a" stroke="#ffb7df" stroke-width="6"/>
+<path d="M190 355 Q190 130 400 105 Q610 130 610 355 L565 545 Q500 635 400 635 Q300 635 235 545Z" fill="#f4d4c2"/>
+<path d="M150 330 Q110 120 350 78 Q570 70 650 275 L610 405 Q565 310 500 235 Q395 190 280 245 Q225 300 205 430Z" fill="#ffb7df"/><path d="M150 320 Q85 390 135 650 L225 575 L240 300Z" fill="#ffb7df"/><path d="M650 300 Q725 395 670 650 L575 575 L560 290Z" fill="#ffb7df"/>
+<path d="M245 430 Q295 390 345 430 Q300 472 245 430Z" fill="#111827"/><ellipse cx="300" cy="432" rx="10" ry="14" fill="#ffb7df"/><path d="M455 430 Q505 390 555 430 Q500 472 455 430Z" fill="#111827"/><ellipse cx="500" cy="432" rx="10" ry="14" fill="#ffb7df"/>
+<path d="M350 520 Q400 548 450 520" fill="none" stroke="#855b63" stroke-width="9" stroke-linecap="round"/>
+<circle cx="300" cy="725" r="58" fill="#eaf8ff" stroke="#ffb7df" stroke-width="8"/><circle cx="500" cy="725" r="58" fill="#eaf8ff" stroke="#ffb7df" stroke-width="8"/>
+<path d="M400 635 L400 920" stroke="#ffffff22" stroke-width="3"/><rect x="28" y="28" width="744" height="944" rx="42" fill="none" stroke="#ffffff2c" stroke-width="3"/>
+<rect x="48" y="48" width="230" height="38" rx="19" fill="#050811aa" stroke="#ffffff22"/><text x="66" y="73" fill="#fff" font-family="Arial" font-size="17" font-weight="700">HONKAI: STAR RAIL</text>
+<text x="55" y="875" fill="#ffffffaa" font-family="Arial" font-size="22" letter-spacing="5">HONKAI: STAR RAIL</text><text x="55" y="932" fill="#fff" font-family="Georgia" font-size="52" font-weight="700">March 7th</text>
+</svg>

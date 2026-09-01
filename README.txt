@@ -1,18 +1,13 @@
-CARDVERSE V13 — PROFILE + CARD FRAME UPDATE
+CARDVERSE V11 CARD ART
 
-สิ่งที่เพิ่ม:
-- ปรับกรอบภาพการ์ดให้เป็น frame แบบเกมการ์ด พร้อมเส้นขอบตาม Rarity
-- รูปการ์ดใช้ object-fit: contain เพื่อให้โปสเตอร์ของคุณไม่ถูกครอป
-- เพิ่มกรอบ Gold / Neon / Clean / Holo
-- เพิ่มสี Accent ของโปรไฟล์
-- เพิ่มฉายาโปรไฟล์
-- เพิ่มอัปโหลดรูปโปรไฟล์จากเครื่อง และย่อรูปอัตโนมัติให้เก็บใน localStorage
-- เพิ่มหน้า Preview โปรไฟล์
-- ตัวเลือกโปรไฟล์เดิมยังใช้ได้
+Replace these files with your own character images when ready:
+jinhsi.svg
+phrolova.svg
+changli.svg
+yinlin.svg
+shorekeeper.svg
+jiyan.svg
+rover.svg
 
-วิธีใช้รูปการ์ด:
-วางรูปไว้ในโฟลเดอร์เดียวกับ HTML หรือ assets/cards/ โดยใช้ชื่อ เช่น Changli_Card.jpg, Jinhsi_Card.png เป็นต้น
-ระบบจะลอง .jpg .jpeg .png .webp อัตโนมัติ
-
-หมายเหตุ:
-V13 ไม่ได้แทนที่รูปของผู้ใช้ ถ้านายมีรูปจริงอยู่แล้ว ให้คัดลอกไฟล์เหล่านั้นเข้าโฟลเดอร์โปรเจกต์หลังแตก ZIP
+You can use PNG/JPG too; if you change an extension, update the matching path in app.js and profile.html.
+The game logic does not depend on the artwork files.

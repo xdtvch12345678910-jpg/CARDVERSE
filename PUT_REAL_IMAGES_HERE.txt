@@ -1,0 +1,1 @@
+Place Changli_Card.png, Jinhsi_Card.png, Yinlin_Card.png, etc. in assets/cards. The loader supports PNG/JPG/JPEG/WEBP/GIF/SVG.
