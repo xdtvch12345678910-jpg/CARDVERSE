@@ -1,0 +1,85 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Profile</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+
+<div class="showcase-hero">
+  <img class="showcase-hero-bg" id="scBg" alt="">
+  <div class="showcase-particle" style="width:3px;height:3px;left:20%;top:80%;animation:drift 9s ease-in infinite"></div>
+  <div class="showcase-particle" style="width:2px;height:2px;left:55%;top:85%;animation:drift 12s ease-in infinite 2s"></div>
+  <div class="showcase-particle" style="width:4px;height:4px;left:75%;top:75%;animation:drift 10s ease-in infinite 4s"></div>
+  <div class="showcase-particle" style="width:2px;height:2px;left:35%;top:90%;animation:drift 14s ease-in infinite 6s"></div>
+  <div class="showcase-particle" style="width:3px;height:3px;left:88%;top:82%;animation:drift 11s ease-in infinite 1s"></div>
+  <div class="showcase-hero-fade"></div>
+  <div class="showcase-content">
+    <div class="showcase-top-row">
+      <div class="showcase-id">
+        <div class="showcase-avatar"><img id="scAvatar" data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"></div>
+        <div class="showcase-id-text">
+          <div class="showcase-name" id="scName">CARD COLLECTOR</div>
+          <div class="showcase-badge" id="scBadge">✦ RANK 1 COLLECTOR</div>
+          <div class="showcase-bio" id="scBio">—</div>
+        </div>
+      </div>
+      <a href="profile-edit.html" class="btn">✎ <span data-i18n="editProfile">Edit Profile</span></a>
+    </div>
+    <div class="showcase-stat-row">
+      <div class="showcase-stat-chip gold"><div class="label">Coins</div><div class="val" id="scCoins">🪙 0</div></div>
+      <div class="showcase-stat-chip"><div class="label" data-i18n="cardsCollected">สะสมการ์ดแล้ว</div><div class="val" id="scOwned">0</div></div>
+      <div class="showcase-stat-chip green"><div class="label" data-i18n="duel">ดวลการ์ด</div><div class="val" id="scDuel">0W – 0L</div></div>
+      <div class="showcase-stat-chip cyan"><div class="label">Pity</div><div class="val" id="scPity">0 / 10</div></div>
+    </div>
+  </div>
+</div>
+<div class="showcase-cards-panel">
+  <div class="showcase-cards-inner">
+    <div class="showcase-cards-label" data-i18n="showcase">SHOWCASE CARDS</div>
+    <div class="showcase-cards-grid" id="scGrid"></div>
+  </div>
+</div>
+
+</section></main><footer>CARDVERSE V29</footer><script src="app.js"></script>
+<script>
+function renderShowcase(){
+  const s=state();
+  const bg=getProfileBg();
+  const bgImg=document.getElementById('scBg');
+  if(bg){
+    bgImg.style.display='block';
+    if(bg.custom){
+      bgImg.onerror=null;bgImg.src=bg.artData;
+      bgImg.style.objectPosition=`${Number(s.profileBgCustomPosX??50)}% ${Number(s.profileBgCustomPosY??50)}%`;
+      bgImg.style.transform=`scale(${Math.max(.75,Math.min(2,Number(s.profileBgCustomZoom??1)))})`;
+    }else{
+      setArt(bgImg,bg.artBase);
+      bgImg.style.objectPosition='center center';
+      bgImg.style.transform='scale(1)';
+    }
+  }else{
+    bgImg.style.display='none';
+  }
+  document.getElementById('scName').textContent=s.profileName||'CARD COLLECTOR';
+  document.getElementById('scBadge').textContent='✦ '+collectorTitle(s);
+  const uniq=new Set(s.owned).size;
+  document.getElementById('scBio').textContent=`${t('cardsCollected')} ${uniq} ใบ • สุ่มมาแล้ว ${s.totalPulls} ครั้ง`;
+  document.getElementById('scCoins').textContent='🪙 '+s.coins;
+  document.getElementById('scOwned').textContent=uniq;
+  document.getElementById('scDuel').textContent=`${s.duelWins||0}W – ${s.duelLosses||0}L`;
+  document.getElementById('scPity').textContent=`${s.pity} / 10`;
+
+  const grid=document.getElementById('scGrid');
+  const picks=(s.profileShowcase||[]).slice(0,3);
+  const slots=[];
+  for(let i=0;i<3;i++){
+    const id=picks[i];
+    const c=id?CARDS.find(x=>x.id===id):null;
+    if(c){
+      const rarityClass=c.rarity==='LEGENDARY'?'legendary':c.rarity==='EPIC'?'epic':'';
+      slots.push(`<div class="showcase-card-slot ${rarityClass}"><img ${artAttrs(c)} alt="${c.name}" loading="lazy"><div class="sc-name">${c.name}</div></div>`);
+    }else{
+      slots.push(`<a href="profile-edit.html" class="showcase-card-slot empty" data-i18n="noShowcase">${t('noShowcase')}</a>`);
+    }
+  }
+  grid.innerHTML=slots.join('');
+  initArtImages();
+}
+renderShowcase();
+</script>
+</body></html>

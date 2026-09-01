@@ -1,0 +1,19 @@
+CARDVERSE V16 — CARD IMAGE FILENAMES
+
+Put your real card images in the same folder as the HTML files (or in assets/cards/).
+The website will automatically look for these exact base names with .jpg/.jpeg/.png/.webp:
+
+Changli_Card
+Jinhsi_Card
+Yinlin_Card
+Lingyang_Card
+Carlotta_Card
+Jianxin_Card
+Shorekeeper_Card
+Hiyuki_Card
+Suisui_Card
+Denia_Card
+Qingxiao_Card
+Aemeath_Card
+
+The loader checks the project root first, then assets/cards/, so the files do not need to be renamed if they already use these names.

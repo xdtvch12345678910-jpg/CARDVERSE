@@ -1,0 +1,43 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Fusion</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><div class="eyebrow">MELT & UPGRADE</div><h2 data-i18n="fusionTitle">ห้องอัปเกรดการ์ด</h2><p data-i18n="fusionDesc">รวมการ์ดซ้ำระดับเดียวกัน 3 ใบ เพื่ออัปเกรดเป็นการ์ดระดับสูงขึ้น</p></div><div class="balance">🪙 <strong><span data-coins>0</span></strong></div></div>
+
+<div class="grid" id="fusionGrid" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr))"></div>
+
+<div id="fusionResult" class="panel" style="margin-top:24px;display:none;text-align:center"></div>
+
+</section></main><footer>CARDVERSE V29 • Fusion Lab</footer><script src="app.js"></script>
+<script>
+const FUSION_TIERS=['COMMON','RARE','EPIC','LEGENDARY'];
+const FUSION_NEXT_LABEL={COMMON:'RARE',RARE:'EPIC',EPIC:'LEGENDARY'};
+function renderFusionGrid(){
+  const s=state();
+  document.getElementById('fusionGrid').innerHTML=FUSION_TIERS.map(rarity=>{
+    const count=ownedCountByRarity(rarity);
+    const enough=count>=3;
+    const next=FUSION_NEXT_LABEL[rarity];
+    return `<div class="panel rarity-${rarity.toLowerCase()}">
+      <div class="card-top"><span class="rarity">${rarity}</span><span class="muted">${t('haveCount')}: ${count}</span></div>
+      <h3 style="margin:10px 0 4px">${next?`${rarity} → ${next}`:`${rarity} → 🪙 ${FUSION_LEGENDARY_BONUS}`}</h3>
+      <p class="muted" style="font-size:12px;margin:0 0 16px">${next?'':t('fusionMaxed').split('✓')[0]}</p>
+      <button class="btn" style="width:100%" ${enough?'':'disabled'} onclick="doFuse('${rarity}')">${t('fuse')}</button>
+    </div>`;
+  }).join('');
+}
+function doFuse(rarity){
+  const res=fuseCards(rarity);
+  if(!res)return;
+  const box=document.getElementById('fusionResult');
+  box.style.display='block';
+  if(res.resultCard){
+    const c=res.resultCard;
+    box.innerHTML=`<div style="font:800 22px Cinzel;color:var(--gold)">✨ ${t('fusionSuccess')} ${c.name} (${c.rarity})</div>`;
+    toast(`${t('fusionSuccess')} ${c.name} ✓`);
+  }else{
+    box.innerHTML=`<div style="font:800 22px Cinzel;color:var(--gold)">🪙 ${t('fusionMaxed')}${res.coinBonus}</div>`;
+    toast(`+${res.coinBonus} 🪙`);
+  }
+  renderFusionGrid();
+}
+renderFusionGrid();
+</script>
+</body></html>

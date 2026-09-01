@@ -1,0 +1,30 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Frame Shop</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><div class="eyebrow">COSMETICS</div><h2 data-i18n="frameShopTitle">ร้านค้ากรอบการ์ด</h2><p data-i18n="frameShopDesc">ปลดล็อกกรอบการ์ดใหม่ด้วยเหรียญ ใช้ได้ทั้งเว็บทุกหน้า</p></div><div class="balance">🪙 <strong><span data-coins>0</span></strong></div></div>
+
+<div class="grid" id="frameGrid"></div>
+
+</section></main><footer>CARDVERSE V29 • Frame Shop</footer><script src="app.js"></script>
+<script>
+function renderFrameShop(){
+  const s=state();
+  const owned=s.ownedFrames||[];
+  const equipped=s.profileFrame||'holo';
+  document.getElementById('frameGrid').innerHTML=FRAMES.map(f=>{
+    const isOwned=owned.includes(f.id);
+    const isEquipped=equipped===f.id;
+    let btn;
+    if(isEquipped)btn=`<button class="btn equipped-btn" disabled>✓ ${t('equipped')}</button>`;
+    else if(isOwned)btn=`<button class="btn owned-btn" onclick="equipFrame('${f.id}')">${t('equip')}</button>`;
+    else btn=`<button class="btn" onclick="buyFrame('${f.id}')">🪙 ${f.price}</button>`;
+    return `<div class="panel frame-shop-card">
+      <div class="frame-preview pv-${f.id}"></div>
+      <h4>${f.name}</h4>
+      <p class="muted">${f.desc}</p>
+      ${isOwned?`<div class="muted" style="font-size:10px;margin-bottom:6px">${isEquipped?'':'✓ '+t('owned2')}</div>`:''}
+      ${btn}
+    </div>`;
+  }).join('');
+}
+renderFrameShop();
+</script>
+</body></html>

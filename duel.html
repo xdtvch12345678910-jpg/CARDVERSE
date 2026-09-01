@@ -1,0 +1,184 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Duel</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><div class="eyebrow">RISK IT FOR IT</div><h2 data-i18n="duelTitle">สังเวียนดวลการ์ด</h2><p data-i18n="duelDesc">เลือกการ์ดจากคลัง วางเดิมพัน แล้วประลองกับคู่ต่อสู้สุ่ม</p></div><div class="balance">🪙 <strong><span data-coins>0</span></strong></div></div>
+
+<div id="duelEmpty" class="empty" style="display:none"><span data-i18n="needCardForDuel">ต้องมีการ์ดในคลังก่อนถึงจะดวลได้</span><br><a class="btn" href="packs.html" data-i18n="gacha">สุ่มการ์ด</a></div>
+
+<div id="duelBody">
+  <h4 style="margin:0 0 12px" data-i18n="pickCard">เลือกการ์ด</h4>
+  <div class="main-card-picker" id="duelPicker" style="grid-template-columns:repeat(5,minmax(105px,1fr))"></div>
+
+  <div class="panel" style="margin-top:26px">
+    <div class="option-row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+      <div>
+        <h4 style="margin:0 0 10px" data-i18n="bet">เดิมพัน</h4>
+        <div class="option-row" id="betRow">
+          <button type="button" class="style-choice bet-choice selected" data-bet="100">🪙 100</button>
+          <button type="button" class="style-choice bet-choice" data-bet="300">🪙 300</button>
+          <button type="button" class="style-choice bet-choice" data-bet="500">🪙 500</button>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="muted" style="font-size:12px" data-i18n="winChance">โอกาสชนะ</div>
+        <div id="winChanceText" style="font:800 30px Cinzel;color:var(--cyan)">—</div>
+      </div>
+    </div>
+
+    <div class="duel-battlefield" id="duelField" style="display:none">
+      <div class="duel-side">
+        <div class="duel-side-art"><img id="dfPlayerArt" alt=""></div>
+        <div class="duel-side-name" id="dfPlayerName">—</div>
+        <div class="hp-track"><div class="hp-fill" id="dfPlayerHp" style="width:100%"></div></div>
+        <div class="hp-label"><span id="dfPlayerHpText">100</span> HP</div>
+      </div>
+      <div class="duel-vs">VS</div>
+      <div class="duel-side">
+        <div class="duel-side-art"><img id="dfEnemyArt" alt=""></div>
+        <div class="duel-side-name" id="dfEnemyName">—</div>
+        <div class="hp-track"><div class="hp-fill enemy" id="dfEnemyHp" style="width:100%"></div></div>
+        <div class="hp-label"><span id="dfEnemyHpText">100</span> HP</div>
+      </div>
+    </div>
+    <div class="duel-log" id="duelLog" style="display:none"></div>
+
+    <button id="fightBtn" class="btn summon-btn" style="margin-top:20px;width:100%" onclick="startDuel()" data-i18n="fight">เริ่มดวล ⚔️</button>
+  </div>
+
+  <div id="duelResult" class="panel" style="margin-top:20px;display:none;text-align:center"></div>
+
+  <div class="statgrid" style="margin-top:26px">
+    <div class="stat"><span class="muted" data-i18n="duelWins">ชนะ</span><b id="dWins" style="color:var(--green)">0</b></div>
+    <div class="stat"><span class="muted" data-i18n="duelLosses">แพ้</span><b id="dLosses" style="color:var(--red)">0</b></div>
+  </div>
+</div>
+
+</section></main><footer>CARDVERSE V29 • Duel Arena</footer><script src="app.js"></script>
+<script>
+let selectedDuelCard=null, selectedBet=100;
+function renderDuelPicker(){
+  const s=state();
+  const ownedIds=[...new Set(s.owned)];
+  const host=document.getElementById('duelPicker');
+  const empty=document.getElementById('duelEmpty');
+  const body=document.getElementById('duelBody');
+  if(!ownedIds.length){empty.style.display='block';body.style.display='none';return;}
+  empty.style.display='none';body.style.display='block';
+  if(!selectedDuelCard||!ownedIds.includes(selectedDuelCard))selectedDuelCard=ownedIds[0];
+  host.innerHTML=ownedIds.map(id=>{
+    const c=CARDS.find(x=>x.id===id);if(!c)return'';
+    const sel=selectedDuelCard===id;
+    return `<button type="button" class="main-card-choice ${sel?'selected':''}" onclick="pickDuelCard('${id}')">
+      <div class="main-card-choice-art"><img ${artAttrs(c)} alt="${c.name}" loading="lazy">${sel?'<span class="selected-badge">✓</span>':''}</div>
+      <div class="main-card-choice-info"><b>${c.name}</b><small>${c.rarity} • ATK ${c.atk}</small></div>
+    </button>`;
+  }).join('');
+  initArtImages();
+  updateWinChance();
+  document.getElementById('dWins').textContent=s.duelWins||0;
+  document.getElementById('dLosses').textContent=s.duelLosses||0;
+}
+function pickDuelCard(id){selectedDuelCard=id;renderDuelPicker();}
+function updateWinChance(){
+  const c=CARDS.find(x=>x.id===selectedDuelCard);
+  const chance=duelWinChance(c);
+  document.getElementById('winChanceText').textContent=Math.round(chance*100)+'%';
+}
+document.getElementById('betRow').addEventListener('click',e=>{
+  const b=e.target.closest('.bet-choice');if(!b)return;
+  selectedBet=Number(b.dataset.bet);
+  document.querySelectorAll('.bet-choice').forEach(x=>x.classList.toggle('selected',x===b));
+});
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function weightedSplit(total,n){
+  const raw=Array.from({length:n},()=>Math.random()+0.35);
+  const sum=raw.reduce((a,b)=>a+b,0);
+  const out=raw.map(x=>Math.round(x/sum*total));
+  const diff=total-out.reduce((a,b)=>a+b,0);
+  out[out.length-1]+=diff;
+  return out.map(x=>Math.max(1,x));
+}
+function buildBattlePlan(playerWins){
+  const rounds=4+Math.floor(Math.random()*3);
+  const loserDmg=weightedSplit(100,rounds);
+  const winnerTotal=Math.round(30+Math.random()*35);
+  const winnerDmg=weightedSplit(winnerTotal,rounds);
+  const plan=[];
+  for(let i=0;i<rounds;i++){
+    plan.push(playerWins?{toEnemy:loserDmg[i],toPlayer:winnerDmg[i]}:{toEnemy:winnerDmg[i],toPlayer:loserDmg[i]});
+  }
+  return plan;
+}
+function logLine(text){
+  const log=document.getElementById('duelLog');
+  const div=document.createElement('div');
+  div.textContent=text;
+  log.appendChild(div);
+  log.scrollTop=log.scrollHeight;
+}
+async function startDuel(){
+  if(!selectedDuelCard)return;
+  const playerCard=CARDS.find(x=>x.id===selectedDuelCard);
+  const btn=document.getElementById('fightBtn');
+  btn.disabled=true;
+  document.getElementById('duelResult').style.display='none';
+
+  const res=duelFight(selectedDuelCard,selectedBet);
+  if(!res){btn.disabled=false;return;}
+
+  const enemyPool=CARDS.filter(x=>x.id!==selectedDuelCard);
+  const enemy=enemyPool[Math.floor(Math.random()*enemyPool.length)];
+
+  const field=document.getElementById('duelField');
+  const log=document.getElementById('duelLog');
+  field.style.display='grid';log.style.display='flex';log.innerHTML='';
+  document.getElementById('dfPlayerArt').src='';
+  document.getElementById('dfEnemyArt').src='';
+  setArt(document.getElementById('dfPlayerArt'),playerCard.artBase);
+  setArt(document.getElementById('dfEnemyArt'),enemy.artBase);
+  document.getElementById('dfPlayerName').textContent=playerCard.name;
+  document.getElementById('dfEnemyName').textContent=enemy.name;
+
+  let hpP=100,hpE=100;
+  const setHp=(side,hp)=>{
+    hp=Math.max(0,Math.round(hp));
+    const fill=document.getElementById(side==='p'?'dfPlayerHp':'dfEnemyHp');
+    const txt=document.getElementById(side==='p'?'dfPlayerHpText':'dfEnemyHpText');
+    fill.style.width=hp+'%';txt.textContent=hp;
+    fill.classList.toggle('low',hp<=30);
+  };
+  setHp('p',100);setHp('e',100);
+  logLine(`⚔️ ${playerCard.name} ปะทะ ${enemy.name}!`);
+  await sleep(500);
+
+  const plan=buildBattlePlan(res.win);
+  for(let i=0;i<plan.length;i++){
+    const r=plan[i];
+    await sleep(700);
+    hpE-=r.toEnemy;setHp('e',Math.max(0,hpE));
+    document.getElementById('dfEnemyArt').closest('.duel-side').classList.add('duel-shake');
+    setTimeout(()=>document.getElementById('dfEnemyArt').closest('.duel-side').classList.remove('duel-shake'),350);
+    logLine(`รอบ ${i+1}: ${playerCard.name} โจมตี ${enemy.name} ${r.toEnemy} ดาเมจ`);
+    await sleep(650);
+    hpP-=r.toPlayer;setHp('p',Math.max(0,hpP));
+    document.getElementById('dfPlayerArt').closest('.duel-side').classList.add('duel-shake');
+    setTimeout(()=>document.getElementById('dfPlayerArt').closest('.duel-side').classList.remove('duel-shake'),350);
+    logLine(`รอบ ${i+1}: ${enemy.name} โจมตีกลับ ${r.toPlayer} ดาเมจ`);
+  }
+  await sleep(400);
+
+  const box=document.getElementById('duelResult');
+  box.style.display='block';
+  if(res.win){
+    logLine(`🏆 ${enemy.name} หมดแรง! ${playerCard.name} ชนะ!`);
+    box.innerHTML=`<div style="font:800 24px Cinzel;color:var(--green)">🏆 ${t('duelWin')}</div><div class="muted" style="margin-top:8px">+${res.payout} 🪙</div>`;
+    toast(`${t('duelWin')} +${res.payout} 🪙`);
+  }else{
+    logLine(`💥 ${playerCard.name} หมดแรง! ${enemy.name} ชนะ`);
+    box.innerHTML=`<div style="font:800 24px Cinzel;color:var(--red)">💥 ${t('duelLose')}</div><div class="muted" style="margin-top:8px">-${res.bet} 🪙</div>`;
+    toast(`${t('duelLose')} -${res.bet} 🪙`);
+  }
+  btn.disabled=false;
+  renderDuelPicker();
+}
+renderDuelPicker();
+</script>
+</body></html>

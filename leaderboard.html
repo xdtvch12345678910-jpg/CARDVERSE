@@ -1,0 +1,52 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Stats</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><div class="eyebrow">HALL OF RECORDS</div><h2 data-i18n="leaderboardTitle">สถิติของฉัน</h2><p data-i18n="leaderboardDesc">สถิติส่วนตัวบนเครื่องนี้ — ยังไม่มีระบบเซิร์ฟเวอร์เปรียบเทียบกับผู้เล่นอื่น</p></div><div class="balance">🪙 <strong><span data-coins>0</span></strong></div></div>
+
+<div class="statgrid" id="lbStats" style="margin-top:10px"></div>
+
+<div class="panel" style="margin-top:24px" id="lbBestCardPanel">
+  <h3 data-i18n="bestCard">การ์ดที่มีค่ามากที่สุด</h3>
+  <div id="lbBestCard"></div>
+</div>
+
+<div class="panel" style="margin-top:20px">
+  <h3>สัดส่วนการ์ดตามระดับ</h3>
+  <div id="lbRarityBreakdown" class="statgrid"></div>
+</div>
+
+</section></main><footer>CARDVERSE V29</footer><script src="app.js"></script>
+<script>
+function renderLeaderboard(){
+  const s=state();
+  const uniq=new Set(s.owned);
+  const totalOwned=s.owned.length;
+  const winRate=(s.duelWins+s.duelLosses)>0?Math.round(s.duelWins/(s.duelWins+s.duelLosses)*100):0;
+
+  document.getElementById('lbStats').innerHTML=`
+    <div class="stat"><span class="muted">Coins</span><b style="color:var(--gold)">🪙 ${s.coins}</b></div>
+    <div class="stat"><span class="muted" data-i18n="cardsCollected">สะสมการ์ดแล้ว</span><b>${uniq.size}</b></div>
+    <div class="stat"><span class="muted">การ์ดทั้งหมด (รวมซ้ำ)</span><b>${totalOwned}</b></div>
+    <div class="stat"><span class="muted">สุ่มมาแล้ว</span><b>${s.totalPulls} ครั้ง</b></div>
+    <div class="stat"><span class="muted">สถิติดวล</span><b style="color:var(--green)">${s.duelWins}W – ${s.duelLosses}L</b></div>
+    <div class="stat"><span class="muted">อัตราชนะดวล</span><b style="color:var(--cyan)">${winRate}%</b></div>
+    <div class="stat"><span class="muted">Pity</span><b>${s.pity} / 10</b></div>
+    <div class="stat"><span class="muted">แรงค์</span><b style="color:var(--purple)">${collectorTitle(s)}</b></div>
+  `;
+
+  const ownedCards=[...uniq].map(id=>CARDS.find(c=>c.id===id)).filter(Boolean);
+  const best=ownedCards.sort((a,b)=>b.price-a.price)[0];
+  document.getElementById('lbBestCardPanel').style.display=best?'block':'none';
+  if(best){
+    document.getElementById('lbBestCard').innerHTML=cardHTML(best,{});
+  }
+
+  const rarities=['LEGENDARY','EPIC','RARE','COMMON'];
+  document.getElementById('lbRarityBreakdown').innerHTML=rarities.map(r=>{
+    const count=ownedCards.filter(c=>c.rarity===r).length;
+    return `<div class="stat"><span class="muted">${r}</span><b>${count}</b></div>`;
+  }).join('');
+
+  initArtImages();
+}
+renderLeaderboard();
+</script>
+</body></html>

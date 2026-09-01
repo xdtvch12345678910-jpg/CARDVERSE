@@ -1,0 +1,119 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Edit Profile</title><link rel="stylesheet" href="style.css">
+</head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><a href="profile.html" class="muted" style="font-size:12px;text-decoration:none">← กลับไปหน้าโปรไฟล์</a><h2 style="margin-top:8px" data-i18n="editProfile">แก้ไขโปรไฟล์</h2></div></div>
+<div class="profile-v9"><div class="panel profile-card"><div class="avatar-big"><img id="profileAvatar" data-art-base="Jinhsi_Card" onerror="artFallback(this)"></div><div class="eyebrow" data-i18n="player">โปรไฟล์ผู้เล่น</div><input class="profile-input" id="profileNameInput" value="CARD COLLECTOR" maxlength="24" data-i18n="name"><input class="profile-input" id="profileTitleInput" value="CARD COLLECTOR" maxlength="28" data-i18n="profileTitle"><p class="muted">เปลี่ยนชื่อ ฉายา รูป และสไตล์โปรไฟล์ได้ตลอด</p><label class="upload-label">🖼️ <span data-i18n="upload">อัปโหลดรูปของฉัน</span><input type="file" accept="image/*" id="v21ProfileUpload"></label><div class="image-position-box"><div class="position-title">🎯 จัดตำแหน่งรูปโปรไฟล์</div><div class="range-row"><label>ซ้าย ↔ ขวา <output id="avatarPosXVal">50%</output></label><input id="avatarPosX" type="range" min="0" max="100" value="50" oninput="updateAvatarPosition('x',this.value)"></div><div class="range-row"><label>บน ↕ ล่าง <output id="avatarPosYVal">50%</output></label><input id="avatarPosY" type="range" min="0" max="100" value="50" oninput="updateAvatarPosition('y',this.value)"></div><div class="range-row"><label>ซูม <output id="avatarZoomVal">1.00x</output></label><input id="avatarZoom" type="range" min="0.75" max="2" step="0.01" value="1" oninput="updateAvatarPosition('z',this.value)"></div></div><button class="btn" style="margin-top:12px" onclick="saveProfile()">💾 <span data-i18n="saveProfile">บันทึกโปรไฟล์</span></button></div><div class="panel"><h3 data-i18n="customizer">ปรับแต่งโปรไฟล์</h3><p class="muted" data-i18n="chooseAvatar">เลือกรูปโปรไฟล์</p><div class="avatar-grid">
+<button class="avatar-choice" data-art-base="Changli_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Changli_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Jinhsi_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Jinhsi_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Yinlin_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Yinlin_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Lingyang_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Lingyang_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Carlotta_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Carlotta_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Jianxin_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Jianxin_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Shorekeeper_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Shorekeeper_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Hiyuki_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Hiyuki_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Suisui_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Suisui_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Denia_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Denia_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Qingxiao_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Qingxiao_Card" onerror="artFallback(this)"></button>
+<button class="avatar-choice" data-art-base="Aemeath_Card" onclick="selectAvatarV21(this.dataset.artBase)"><img data-art-base="Aemeath_Card" onerror="artFallback(this)"></button>
+</div><div class="profile-customizer"><div class="custom-box"><h4 data-i18n="accent">สีโปรไฟล์</h4><div class="option-row"><button class="color-choice" style="background:#a27bff" data-color="#a27bff" onclick="document.querySelectorAll('.color-choice').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')"></button><button class="color-choice" style="background:#79e5ff" data-color="#79e5ff" onclick="document.querySelectorAll('.color-choice').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')"></button><button class="color-choice" style="background:#f1c85d" data-color="#f1c85d" onclick="document.querySelectorAll('.color-choice').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')"></button><button class="color-choice" style="background:#ff77c9" data-color="#ff77c9" onclick="document.querySelectorAll('.color-choice').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')"></button><button class="color-choice" style="background:#69e2b1" data-color="#69e2b1" onclick="document.querySelectorAll('.color-choice').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')"></button></div></div><div class="custom-box"><h4 data-i18n="frame">กรอบการ์ด</h4><div class="option-row" id="frameChoices"></div></div></div><div class="custom-box" style="margin-top:18px"><h4 data-i18n="preview">ตัวอย่างโปรไฟล์</h4><div class="profile-preview"><div class="profile-preview-inner"><div class="avatar-big"><img id="previewAvatar" data-art-base="Jinhsi_Card" onerror="artFallback(this)"></div><div><div class="preview-name" id="previewName">CARD COLLECTOR</div><div class="preview-title" id="previewTitle">CARD COLLECTOR</div></div></div></div></div><div class="daily"><strong data-i18n="daily">รางวัลรายวัน</strong><p>300 Coins / วัน</p><button class="btn" onclick="daily()" data-i18n="claim">รับ +300</button></div></div></div>
+
+<div class="panel" style="margin-top:20px">
+  <h3>🖼️ พื้นหลังโปรไฟล์</h3>
+  <p class="muted">เลือกการ์ดจากคลัง หรืออัปโหลดรูปเอง เพื่อใช้เป็นพื้นหลังของหน้าโปรไฟล์ (แยกจาก Main Card หน้าแรก) ถ้ายังไม่ตั้งจะใช้ฉากมืดเรียบๆ เป็นค่าเริ่มต้น</p>
+  <div class="custom-card-upload-row">
+    <label class="upload-label upload-label-card">
+      🖼️ อัปโหลดรูปพื้นหลังของฉัน
+      <input type="file" accept="image/*" id="profileBgUpload" onchange="handleProfileBgUpload(this)">
+    </label>
+    <button type="button" class="danger-btn" onclick="removeProfileBg()">รีเซ็ตเป็นค่าเริ่มต้น</button>
+  </div>
+  <div class="image-position-box" style="margin-top:14px">
+    <div class="position-title">🎯 จัดตำแหน่งรูปพื้นหลัง (ใช้ได้เมื่อเลือกรูปที่อัปโหลดเอง)</div>
+    <div class="range-row">
+      <label>ซ้าย ↔ ขวา <output id="profileBgPosXVal">50%</output></label>
+      <input id="profileBgPosX" type="range" min="0" max="100" value="50" oninput="updateProfileBgPosition('x',this.value)">
+    </div>
+    <div class="range-row">
+      <label>บน ↕ ล่าง <output id="profileBgPosYVal">50%</output></label>
+      <input id="profileBgPosY" type="range" min="0" max="100" value="50" oninput="updateProfileBgPosition('y',this.value)">
+    </div>
+    <div class="range-row">
+      <label>ซูม <output id="profileBgZoomVal">1.00x</output></label>
+      <input id="profileBgZoom" type="range" min="0.75" max="2" step="0.01" value="1" oninput="updateProfileBgPosition('z',this.value)">
+    </div>
+  </div>
+  <div id="profileBgPicker" class="main-card-picker" style="margin-top:16px"></div>
+</div>
+
+<div class="panel" style="margin-top:20px">
+  <h3 data-i18n="showcase">การ์ดโชว์เคส</h3>
+  <p class="muted" data-i18n="pickShowcase">เลือกการ์ดที่จะโชว์บนโปรไฟล์ (สูงสุด 3 ใบ)</p>
+  <div id="showcasePicker" class="main-card-picker"></div>
+</div>
+
+<div class="panel main-card-panel v23-main-panel" id="mainCardSettings">
+  <div class="eyebrow">MAIN CARD CUSTOMIZER</div>
+  <h3>🃏 ตั้งการ์ดที่จะแสดงบนหน้าหลัก</h3>
+  <p class="muted">เลือกการ์ด 1 ใบจากคลัง หรืออัปโหลดรูปการ์ดของตัวเอง แล้วการ์ดใบนี้จะแสดงในพื้นที่ Main Card บนหน้า Lobby</p>
+
+  <div class="main-card-hero v23-main-hero">
+    <div class="main-card-preview">
+      <div class="main-card-preview-art">
+        <img data-main-card-art alt="Main Card">
+        <div class="main-card-preview-shine"></div>
+      </div>
+      <div class="main-card-preview-body">
+        <span class="main-card-current-label">MAIN CARD</span>
+        <h2 data-main-card-name>Yinlin</h2>
+        <div><span data-main-card-game>Wuthering Waves</span> • <span data-main-card-rarity>LEGENDARY</span></div>
+      </div>
+    </div>
+
+    <div class="main-card-custom-tools">
+      <div class="custom-card-upload-row">
+        <label class="upload-label upload-label-card">
+          🖼️ อัปโหลดรูปการ์ดของฉัน
+          <input type="file" accept="image/*" id="v21MainCardUpload">
+        </label>
+        <button type="button" class="danger-btn" onclick="removeCustomMainCard()">ลบรูปที่อัปโหลด</button>
+      </div>
+
+      <div class="custom-card-fields">
+        <label>ชื่อการ์ด
+          <input data-custom-main-name maxlength="28" placeholder="ชื่อการ์ด">
+        </label>
+        <label>เกม / ซีรีส์
+          <input data-custom-main-game maxlength="28" placeholder="Wuthering Waves">
+        </label>
+        <label>ระดับ
+          <select data-custom-main-rarity>
+            <option>COMMON</option><option>RARE</option><option>EPIC</option><option>LEGENDARY</option>
+          </select>
+        </label>
+        <button type="button" class="btn" onclick="saveMainInfoV21()">💾 บันทึกข้อมูลการ์ด</button>
+      </div>
+
+      <div class="image-position-box">
+        <div class="position-title">🎯 จัดตำแหน่งรูปการ์ด</div>
+        <div class="range-row">
+          <label>ซ้าย ↔ ขวา <output id="mainCardPosXVal">50%</output></label>
+          <input id="mainCardPosX" type="range" min="0" max="100" value="50" oninput="updateMainV21('x',this.value)">
+        </div>
+        <div class="range-row">
+          <label>บน ↕ ล่าง <output id="mainCardPosYVal">50%</output></label>
+          <input id="mainCardPosY" type="range" min="0" max="100" value="50" oninput="updateMainV21('y',this.value)">
+        </div>
+        <div class="range-row">
+          <label>ซูม <output id="mainCardZoomVal">1.00x</output></label>
+          <input id="mainCardZoom" type="range" min="0.75" max="2" step="0.01" value="1" oninput="updateMainV21('z',this.value)">
+        </div>
+      </div>
+
+      <div class="custom-main-status" id="customMainStatus">การ์ดจากคลัง</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:18px">
+    <h4>เลือกการ์ดที่จะแสดงบนหน้าหลัก</h4>
+    <div id="mainCardPicker" class="main-card-picker"></div>
+  </div>
+</div><div class="panel profile-stats"><h3 data-i18n="stats">สถิติ</h3><div class="statgrid"><div class="stat"><span class="muted">Coins</span><b data-coins>0</b></div><div class="stat"><span class="muted" data-i18n="owned">มีอยู่</span><b id="owned">0</b></div><div class="stat"><span class="muted">Pity</span><b id="profilePity">0 / 10</b></div></div></div></section></main><footer>CARDVERSE V29</footer><script src="app.js"></script></body></html>

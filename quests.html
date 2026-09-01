@@ -1,0 +1,34 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Quests</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><div class="eyebrow">DAILY GRIND</div><h2 data-i18n="questsTitle">ภารกิจประจำวัน & ประจำสัปดาห์</h2><p data-i18n="questsDesc">ทำภารกิจให้ครบเพื่อรับเหรียญเพิ่ม รีเซ็ตอัตโนมัติตามรอบ</p></div><div class="balance">🪙 <strong><span data-coins>0</span></strong></div></div>
+
+<h3 style="margin-top:6px" data-i18n="dailyQuests">ภารกิจประจำวัน</h3>
+<div class="grid" id="dailyGrid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"></div>
+
+<h3 style="margin-top:30px" data-i18n="weeklyQuests">ภารกิจประจำสัปดาห์</h3>
+<div class="grid" id="weeklyGrid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"></div>
+
+</section></main><footer>CARDVERSE V29</footer><script src="app.js"></script>
+<script>
+function questCard(period,q,progress,claimedList){
+  const done=progress>=q.target;
+  const claimed=claimedList.includes(q.id);
+  const pct=Math.min(100,Math.round(progress/q.target*100));
+  let btn;
+  if(claimed)btn=`<button class="btn owned-btn" disabled>✓ ${t('claimed')}</button>`;
+  else if(done)btn=`<button class="btn" onclick="claimQuest('${period}','${q.id}')">🪙 ${t('claimReward')} +${q.reward}</button>`;
+  else btn=`<button class="btn owned-btn" disabled>${progress} / ${q.target}</button>`;
+  return `<div class="panel">
+    <h4 style="margin:0 0 10px">${q.label}</h4>
+    <div class="hp-track" style="margin-bottom:12px"><div class="hp-fill" style="width:${pct}%"></div></div>
+    <div class="muted" style="font-size:11px;margin-bottom:12px">${progress} / ${q.target} ${done&&!claimed?'✓':''}</div>
+    ${btn}
+  </div>`;
+}
+function renderQuests(){
+  const s=state();
+  document.getElementById('dailyGrid').innerHTML=QUESTS_DAILY.map(q=>questCard('daily',q,s.questDaily[q.key]||0,s.questDailyClaimed)).join('');
+  document.getElementById('weeklyGrid').innerHTML=QUESTS_WEEKLY.map(q=>questCard('weekly',q,s.questWeek[q.key]||0,s.questWeekClaimed)).join('');
+}
+renderQuests();
+</script>
+</body></html>

@@ -1,0 +1,61 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CARDVERSE V29 — Settings</title><link rel="stylesheet" href="style.css"></head><body><div id="toast" class="toast"></div><nav><div class="logo">CARDVERSE</div><div class="links"><a href="index.html" data-i18n="home">หน้าแรก</a><a href="cards.html" data-i18n="market">ตลาด</a><a href="packs.html" data-i18n="gacha">สุ่มการ์ด</a><a href="duel.html" data-i18n="duel">ดวลการ์ด</a><a href="fusion.html" data-i18n="fusion">อัปเกรดการ์ด</a><a href="frames.html" data-i18n="frameShop">ร้านกรอบ</a><a href="quests.html" data-i18n="quests">ภารกิจ</a><a href="leaderboard.html" data-i18n="leaderboard">อันดับ</a><a href="collection.html" data-i18n="collection">คลังการ์ด</a><a href="profile.html" data-i18n="profile">โปรไฟล์</a><a href="settings.html" data-i18n="settings">ตั้งค่า</a></div><div class="profile-mini"><img data-profile-avatar data-art-base="Jinhsi_Card" onerror="artFallback(this)"><span data-profile-name>CARD COLLECTOR</span></div><div class="wallet">🪙 <span data-coins>0</span></div><div class="langs"><button data-lang="th">TH</button><button data-lang="en">EN</button></div></nav><main class="wrap"><section class="section">
+<div class="section-head"><div><div class="eyebrow">PREFERENCES</div><h2 data-i18n="settingsTitle">ตั้งค่า</h2></div></div>
+
+<div class="panel">
+  <h3>🌐 ภาษา</h3>
+  <div class="option-row">
+    <button type="button" class="style-choice" data-lang="th">ภาษาไทย</button>
+    <button type="button" class="style-choice" data-lang="en">English</button>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:20px">
+  <h3>🎵 เพลง</h3>
+  <div class="option-row" style="align-items:center;gap:16px">
+    <button type="button" class="btn" id="settingsMusicToggle">▶</button>
+    <div style="flex:1;min-width:180px">
+      <label class="muted" style="font-size:11px" data-i18n="musicVolume">ระดับเสียงเพลง</label>
+      <input id="settingsVolume" type="range" min="0" max="1" step="0.01" value="0.55" oninput="setMusicVolume(this.value)" style="width:100%">
+    </div>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:20px;border-color:#ff587955">
+  <h3 style="color:var(--red)">⚠️ <span data-i18n="resetProgress">รีเซ็ตข้อมูลทั้งหมด</span></h3>
+  <p class="muted" data-i18n="resetWarning">จะลบเหรียญ การ์ด โปรไฟล์ และทุกอย่างทิ้งถาวร กู้คืนไม่ได้</p>
+  <div id="resetStep1">
+    <button type="button" class="danger-btn" onclick="showResetConfirm()" data-i18n="resetProgress">รีเซ็ตข้อมูลทั้งหมด</button>
+  </div>
+  <div id="resetStep2" style="display:none;margin-top:12px">
+    <p class="muted" data-i18n="resetConfirm">ยืนยันการรีเซ็ต — พิมพ์ "RESET" ด้านล่างเพื่อยืนยัน</p>
+    <input id="resetConfirmInput" class="profile-input" style="text-align:left;margin:10px 0" placeholder="RESET">
+    <button type="button" class="danger-btn" onclick="confirmReset()" data-i18n="resetButton">ลบข้อมูลทั้งหมด</button>
+    <button type="button" class="btn owned-btn" onclick="hideResetConfirm()">ยกเลิก</button>
+  </div>
+</div>
+
+</section></main><footer>CARDVERSE V29</footer><script src="app.js"></script>
+<script>
+function syncSettingsUI(){
+  const s=state();
+  const vol=document.getElementById('settingsVolume');if(vol)vol.value=s.musicVolume??.55;
+  const toggle=document.getElementById('settingsMusicToggle');
+  const audio=document.getElementById('cardverseGlobalMusic');
+  if(toggle&&audio)toggle.textContent=audio.paused?'▶':'⏸';
+}
+document.getElementById('settingsMusicToggle').onclick=()=>{
+  const audio=document.getElementById('cardverseGlobalMusic');
+  if(!audio)return;
+  if(audio.paused){audio.play().then(syncSettingsUI).catch(e=>toast(audioErrorMessage(audio,e)))}
+  else{audio.pause();syncSettingsUI();}
+};
+function showResetConfirm(){document.getElementById('resetStep1').style.display='none';document.getElementById('resetStep2').style.display='block';}
+function hideResetConfirm(){document.getElementById('resetStep1').style.display='block';document.getElementById('resetStep2').style.display='none';document.getElementById('resetConfirmInput').value='';}
+function confirmReset(){
+  const val=document.getElementById('resetConfirmInput').value.trim();
+  if(val!=='RESET'){toast('พิมพ์ RESET ให้ตรงตัวพิมพ์ใหญ่เพื่อยืนยัน');return;}
+  resetAllProgress();
+}
+setTimeout(syncSettingsUI,300);
+</script>
+</body></html>
